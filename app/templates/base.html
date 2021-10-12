@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<title>{{  title }}</title>
+</head>
+<body  style="background-color:rgb(29, 68, 48);">
+    <!-- NAVBAR-->
+{% include 'nav.html' %}
+  <!-- MAIN-->
+  <div class="container">
+    {% block content %}
+
+    {% endblock %}
+  </div>
+<br>
+<div class="container">
+    <h1>Theses Are My Favourite Rugby Players:</h1>
+    <ul>Faf De Klerk - Sharks/Springboks</ul>
+    <ul>Siya Kolisi - Springboks</ul>
+    <ul>Hondre Pollard - Springboks</ul>
+    <ul>Robert DuPreez - Sharks</ul>
+    <ul>Owen Farrell - Roses</ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>
