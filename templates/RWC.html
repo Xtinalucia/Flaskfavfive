@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<h1>Check these guys out:</h1>
+<br>
+<a class="2019 RWC" href="https://www.youtube.com/watch?v=dexpn0Vv7a4">2019 RWC Highlights</a>
+
+<!--<p>{{ reel }}</p>-->
+<br><Hr><br>
+<p><h4>Things to know:</h4></p>
+
+<ul>
+    {% for p in reel %}
+         <li>{{ p.title() }}</li>
+    {% endfor %}
+</ul>
+
+<br>
+<hr>
+<center>
+<h7>In case you forgot...</h7>
+</center>
+{% endblock %}
