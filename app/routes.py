@@ -49,4 +49,9 @@ def createpost():
         db.session.commit()
     return render_template('createpost.html', form=form)
 
+@app.route('/PB')
+def phonenumber():
+    title = 'PhoneBook'
+    return render_template('PB.html', title=title)
+
 
