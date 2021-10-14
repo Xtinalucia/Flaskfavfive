@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br><br>
 <h4>Register here:</h4>
 <form action="" methods='post'>
-     {{ form.csfr_token }}
+     {{ form.csrf_token }}
     <div class="form-group">
         <fieldset>
             {{ form.username.label }}
@@ -24,6 +25,7 @@
 {{ form.submit(class='btn btn-success') }}
     
     </div>
+</form>
 
 <!-- </form> {{ forms }}-->
 

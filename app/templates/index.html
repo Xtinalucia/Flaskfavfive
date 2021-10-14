@@ -1,13 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
+<br>
+<br><h4>Welcome {{ current_user.username }}</h4>
+{% else %}
+{% endif %}
 
 <br>
 <br>
-<h5> Muddy Scrum Lines Are Cool</h5>
+<center>
+<h2> Muddy Scrum Lines Are Cool</h2></center>
 <hr>
 <br>
 <img src="https://cdn.pixabay.com/photo/2018/09/23/13/52/rugby-3697512_1280.jpg" alt="scrum">
 <br><hr><center>
-<h5 style="color:purple;">Welcome {{ name_of_user }}</h5></center>
+<!-- <h5 style="color:purple;">Welcome {{ name_of_user }}</h5></center> -->
+<div class="container">
+    <h1>Theses Are My Favourite Rugby Players:</h1>
+    <ul>Faf De Klerk - Sharks/Springboks</ul>
+    <ul>Siya Kolisi - Springboks</ul>
+    <ul>Hondre Pollard - Springboks</ul>
+    <ul>Robert DuPreez - Sharks</ul>
+    <ul>Owen Farrell - Roses</ul>
+
+</div>
+{% for p in posts %}
+    <div class="card bg-primary text-dark">
+        <div class="card-header">
+        {{ p.title }}
+        </div>
+        <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p>{{ p.content }}</p>
+            <footer class="blockquote-footer text-dark">{{ p.author.username }} on <cite title="Source Title">
+                {{ p.date_created.strftime('%A, %b %d, %Y at %I:%M%p') }}
+            </cite></footer>
+        </blockquote>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}
