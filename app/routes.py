@@ -1,9 +1,10 @@
 
-from app import app, db
+from app import app, db, mail
 from flask import render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
 from app.forms import UserInfoForm, PostForm, LoginForm
 from app.models import User, Post
-from flask_login import login_user, logout_user, current_user, login_required
 
 
 @app.route('/')
@@ -25,7 +26,7 @@ def Rugby():
     reel = ['tries not Touchdowns', 'no helmets','you pass to the side, never forward','you can kick','much easier on the eyes than that other sport']
     return render_template('RWC.html', title=title, reel =reel)
 
-@app.route('/register', methods= ['GET', 'POST'])
+@app.route('/register', methods= ["GET", 'POST'])
 def register():
     register_form = UserInfoForm()
     if register_form.validate_on_submit():
@@ -44,13 +45,21 @@ def register():
             return redirect(url_for('register'))
        
        #create a new user instance
-        new_user = User(username,email,password)
+        new_user = User(username, email, password)
         #add the user
         db.session.add(new_user)
         db.session.commit()
         
         #redirect to the home page
         flash(f'thanx {username}', 'success')
+        
+        # Create Welcome Email to new user
+        welcome_message = Message('Welcome!', [email])
+        welcome_message.body = f' Thank you for signing up {username}.'
+
+        # Send Welcome Email
+        mail.send(welcome_message)
+        
         
         return redirect(url_for('index'))
               
@@ -101,6 +110,60 @@ def createpost():
     return redirect(url_for('index'))
         
     return render_template('createpost.html', form=form)
+
+@app.route('/my-account')
+@login_required
+def my_account():
+    return render_template('my_account.html')
+
+
+@app.route('/my-posts')
+@login_required
+def my_posts():
+    posts = current_user.posts
+    return render_template('my_posts.html', posts=posts)
+
+@app.route('/posts/<int:post_id>')
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_detail.html', post=post)
+
+
+@app.route('/posts/<int:post_id>/update', methods=['GET', 'POST'])
+@login_required
+def post_update(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author.id != current_user.id:
+        flash('You may only edit posts your own posts.', 'danger')
+        return redirect(url_for('my_posts'))
+    form = PostForm()
+    if form.validate_on_submit():
+        new_title = form.title.data
+        new_content = form.content.data
+        print(new_title, new_content)
+        post.title = new_title
+        post.content = new_content
+        db.session.commit()
+
+        flash(f'{post.title} has been saved', 'success')
+        return redirect(url_for('post_detail', post_id=post.id))
+
+    return render_template('post_update.html', post=post, form=form)
+
+
+@app.route('/posts/<int:post_id>/delete', methods=['POST'])
+@login_required
+def post_delete(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        flash('You can only delete your own posts', 'danger')
+        return redirect(url_for('my_posts'))
+
+    db.session.delete(post)
+    db.session.commit()
+    
+    flash(f'{post.title} has been deleted', 'success')
+    return redirect(url_for('my_posts'))
 
 @app.route('/PhoneBook', methods=['GET', 'POST'])
 def phonenumber():

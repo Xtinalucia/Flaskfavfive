@@ -1,5 +1,4 @@
 from app import db, login_manager
-import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_login import UserMixin
@@ -18,17 +17,17 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __init__(self, username, email, password):
-        self.username=username
+        self.username = username
         self.email = email
         self.password = generate_password_hash(password)
         
     def check_password(self, password):
         return check_password_hash(self.password, password)   
-    def get_id(self):
-        return chr(self.id)
-    @property
-    def info(self):
-        return f'{self.username} {self.email}'
+    # def get_id(self):
+    #     return chr(self.id)
+    # @property
+    # def info(self):
+    #     return f'{self.username} {self.email}'
         
 class Post(db.Model):
     id= db.Column(db.Integer, primary_key=True)
