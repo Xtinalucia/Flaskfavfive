@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Post
+from app.models import User, Post, Phonebook
 
 if __name__ == '__main__':
     app.run()
@@ -9,5 +9,6 @@ def make_shell_context():
     return {
         'db': db,
         'User': User,
-        'Post': Post
+        'Post': Post,
+        'Phonebook': Phonebook
     }

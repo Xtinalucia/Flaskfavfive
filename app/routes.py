@@ -26,16 +26,30 @@ def Rugby():
     reel = ['tries not Touchdowns', 'no helmets','you pass to the side, never forward','you can kick','much easier on the eyes than that other sport']
     return render_template('RWC.html', title=title, reel =reel)
 
-@app.route('/register', methods= ["GET", 'POST'])
+@app.route('/PhoneBook', methods=['GET', 'POST'])
+def phonenumber():
+    title = 'PhoneBook'
+    PhoneBook_form = UserInfoForm()
+    if PhoneBook_form.validate_on_submit():
+        first_name = PhoneBook_form.first_name.data
+        last_name = PhoneBook_form.last_name.data
+        number = PhoneBook_form.number.data
+        address = PhoneBook_form.address.data
+        new_user = User(first_name,last_name,number, address)
+        db.session.add(new_user)
+        db.session.commit()
+        flash(f'Well that worked.')
+        return redirect(url_for('index'))
+              
+    return render_template('PhoneBook.html', title=title, form=PhoneBook_form)
+
+@app.route('/register', methods= ["GET", "POST"])
 def register():
     register_form = UserInfoForm()
     if register_form.validate_on_submit():
-        print('Hello hi')
         username = register_form.username.data
         email = register_form.email.data
         password = register_form.password.data
-       
-       
         # Check if username already exists
         existing_user = User.query.filter_by(username=username).all()
         if existing_user:
@@ -43,26 +57,19 @@ def register():
             flash(f'The username {username} is already registered. Please try again.', 'danger')
             # Redirect back to the register page
             return redirect(url_for('register'))
-       
        #create a new user instance
         new_user = User(username, email, password)
         #add the user
         db.session.add(new_user)
         db.session.commit()
-        
         #redirect to the home page
         flash(f'thanx {username}', 'success')
-        
         # Create Welcome Email to new user
         welcome_message = Message('Welcome!', [email])
         welcome_message.body = f' Thank you for signing up {username}.'
-
         # Send Welcome Email
-        mail.send(welcome_message)
-        
-        
+        # mail.send(welcome_message)
         return redirect(url_for('index'))
-              
     return render_template('register.html', form=register_form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -165,19 +172,3 @@ def post_delete(post_id):
     flash(f'{post.title} has been deleted', 'success')
     return redirect(url_for('my_posts'))
 
-@app.route('/PhoneBook', methods=['GET', 'POST'])
-def phonenumber():
-    title = 'PhoneBook'
-    PhoneBook_form = UserInfoForm()
-    if PhoneBook_form.validate_on_submit():
-        first_name = PhoneBook_form.first_name.data
-        last_name = PhoneBook_form.last_name.data
-        number = PhoneBook_form.number.data
-        address = PhoneBook_form.address.data
-        new_user = User(first_name,last_name,number, address)
-        db.session.add(new_user)
-        db.session.commit()
-        flash(f'Well that worked.')
-        return redirect(url_for('index'))
-              
-    return render_template('PhoneBook.html', title=title, form=PhoneBook_form)
