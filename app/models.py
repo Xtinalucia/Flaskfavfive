@@ -41,13 +41,15 @@ class Post(db.Model):
         self.content = content
         self.user_id = user_id
         
-class Phonebook():
-    first_name  = db.Column(db.String(150), primary_key=True)
-    last_name = db.Column(db.String(150), nullable=False, unique=True)
-    number = db.Column(db.Integer, nullable=False, unique=False)
-    address = db.Column(db.Integer, nullable=False)
-  
-    def __init__(self, title, content, user_id):
-        self.title= title
-        self.content = content
-        self.user_id = user_id
+class Phonebook(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(150))
+    last_name =  db.Column(db.String(150))
+    phone_number = db.Column(db.String(150))
+    address = db.Column(db.String(300))
+
+    def __init__(self, first_name, last_name, phone_number, address):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.phone_number = phone_number
+        self.address = address

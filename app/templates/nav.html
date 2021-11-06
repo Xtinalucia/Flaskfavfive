@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+<nav class="navbar navbar-expand-lg navbar-light background-color:rgb(36, 46, 44);">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#">Phonebook</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -12,44 +12,27 @@
           </li>
           {% if current_user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="/RWC">Rugby World Cup</a>
+            <a class="nav-link" href="/login">login</a>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="/register">Register</a>
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           {% endif %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Use Me
-            </a>
-
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/pg1">Interesting Stuff</a></li>
-            </ul>
-          </li>
-            <li><a class="dropdown-item" href="/register">FIXME!!!! I DONT WORK!!</a></li>
-          </ul>
-        </li>
-          <li><a class="dropdown-item" href="/createpost">Create Post</a></li>
-        </ul>
-      </li>
           <li class="nav-item">
-            <a class="nav-link" href="/PhoneBook" tabindex="-1" aria-disabled="true">PhoneBook</a>
+            <a class="nav-link" href="/register">Register</a>
+          </li> 
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('my_account') }}">My Account</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="/phonebook" tabindex="-1" aria-disabled="true">PhoneBook</a>
           </li>
-        </ul>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="/login">login</a>
-        </li> -->
-        <ul>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">login</a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link" href="/logout">logout</a>
         </li>
 
-      </ul>
+      
       <ul class="navbar-nav ms-auto">
         {% if current_user.is_authenticated %}
         
@@ -57,9 +40,7 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="{{ url_for('my_account') }}">My Account</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('my_posts') }}">My Posts</a></li>
+    
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/logout">Logout</a></li>
           </ul>

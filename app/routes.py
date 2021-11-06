@@ -3,45 +3,43 @@ from app import app, db, mail
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
-from app.forms import UserInfoForm, PostForm, LoginForm
-from app.models import User, Post
+from app.forms import UserInfoForm, LoginForm, PhonebookForm
+from app.models import User
 
-
-@app.route('/')
+@app.route('/') 
 def index():
-    title = 'These are a few of my favourite things...'
-    posts = Post.query.all()
-    return render_template('index.html', title=title,  posts=posts)
+    return render_template('index.html', title='Home' )
 
-@app.route('/pg1')
-def test():
-    title = 'Giant Slayer'
-    return render_template('pg1.html')
-'<a class="2019 RWC Fights" href="https://www.youtube.com/watch?v=RGrb0LoT6eg">SCUFFLES & BLACKEYES</a>'
-# finish ^ this
 
-@app.route('/RWC')
-def Rugby():
-    title = 'Highlight Reel'
-    reel = ['tries not Touchdowns', 'no helmets','you pass to the side, never forward','you can kick','much easier on the eyes than that other sport']
-    return render_template('RWC.html', title=title, reel =reel)
+@app.route('/phonebook')
+@login_required
+def phonebookl():
+    title = 'Phonebook'
+    phonebooksp = phonebookl.query.all()
+    return render_template('phonebook.html',title=title, phonebookso=phonebooksp)
 
-@app.route('/PhoneBook', methods=['GET', 'POST'])
-def phonenumber():
-    title = 'PhoneBook'
-    PhoneBook_form = UserInfoForm()
-    if PhoneBook_form.validate_on_submit():
-        first_name = PhoneBook_form.first_name.data
-        last_name = PhoneBook_form.last_name.data
-        number = PhoneBook_form.number.data
-        address = PhoneBook_form.address.data
-        new_user = User(first_name,last_name,number, address)
-        db.session.add(new_user)
+
+@app.route('/register_phone_number', methods=['GET', 'POST'])
+@login_required
+def Register_Phone_Number():
+    title = 'Register Phonebook'
+    register_phone_form = PhonebookForm()
+    if register_phone_form.validate_on_submit():
+        first_name = register_phone_form.first_name.data
+        last_name = register_phone_form.last_name.data
+        phone_number = register_phone_form.phone_number.data
+        address = register_phone_form.address.data
+
+        new_phonebook = phonebookl(first_name, last_name, phone_number, address)
+        
+        db.session.add(new_phonebook)
         db.session.commit()
-        flash(f'Well that worked.')
-        return redirect(url_for('index'))
-              
-    return render_template('PhoneBook.html', title=title, form=PhoneBook_form)
+
+        flash(f'Thank you' , 'success')
+        # Redirecting to the home page
+        return redirect(url_for('phonebook'))
+
+    return render_template('register_phone_number.html', title=title, form=register_phone_form)
 
 @app.route('/register', methods= ["GET", "POST"])
 def register():
@@ -84,91 +82,24 @@ def login():
         user = User.query.filter_by(username=username).first()
         
         #check if the user is none or if password is incorrect
-        if not user is None or not user.check_password(password):
-            flash('incorrect password', 'danger')
-            return redirect(url_for('login'))
+        if user is None or not user.check_password(password):
+         flash('incorrect password', 'danger')
+         return redirect(url_for('login'))
         
         login_user(user)
         flash('Success!')
         return redirect(url_for('index'))
         
-    return render_template('login.html', login_form=form, form=form)
+    return render_template('login.html', login_form=form)
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
-        
-
-
-@app.route('/createpost', methods=['GET', 'POST'])
-@login_required
-def createpost():
-    form = PostForm()
-    if form.validate_on_submit():
-        print('hi')
-        title = form.title.data
-        content = form.content.data
-        new_post = Post(title, content, current_user.id)
-        db.session.add(new_post)
-        db.session.commit()
     
-    flash(f'The post {title} has been created.', 'primary')
-    return redirect(url_for('index'))
-        
-    return render_template('createpost.html', form=form)
 
 @app.route('/my-account')
 @login_required
 def my_account():
     return render_template('my_account.html')
-
-
-@app.route('/my-posts')
-@login_required
-def my_posts():
-    posts = current_user.posts
-    return render_template('my_posts.html', posts=posts)
-
-@app.route('/posts/<int:post_id>')
-def post_detail(post_id):
-    post = Post.query.get_or_404(post_id)
-    return render_template('post_detail.html', post=post)
-
-
-@app.route('/posts/<int:post_id>/update', methods=['GET', 'POST'])
-@login_required
-def post_update(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author.id != current_user.id:
-        flash('You may only edit posts your own posts.', 'danger')
-        return redirect(url_for('my_posts'))
-    form = PostForm()
-    if form.validate_on_submit():
-        new_title = form.title.data
-        new_content = form.content.data
-        print(new_title, new_content)
-        post.title = new_title
-        post.content = new_content
-        db.session.commit()
-
-        flash(f'{post.title} has been saved', 'success')
-        return redirect(url_for('post_detail', post_id=post.id))
-
-    return render_template('post_update.html', post=post, form=form)
-
-
-@app.route('/posts/<int:post_id>/delete', methods=['POST'])
-@login_required
-def post_delete(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        flash('You can only delete your own posts', 'danger')
-        return redirect(url_for('my_posts'))
-
-    db.session.delete(post)
-    db.session.commit()
-    
-    flash(f'{post.title} has been deleted', 'success')
-    return redirect(url_for('my_posts'))
 
