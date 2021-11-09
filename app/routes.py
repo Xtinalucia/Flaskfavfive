@@ -1,25 +1,26 @@
 
-from app import app, db, mail
+from app import app, db
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 from app.forms import UserInfoForm, LoginForm, PhonebookForm
 from app.models import User
+from flask import Blueprint, render_template
 
 @app.route('/') 
 def index():
     return render_template('index.html', title='Home' )
 
 
-@app.route('/phonebook')
+@app.route('/phonebook')#show/display all phonebook entries everything For ME
 @login_required
-def phonebookl():
+def phonebook():
     title = 'Phonebook'
-    phonebooksp = phonebookl.query.all()
-    return render_template('phonebook.html',title=title, phonebookso=phonebooksp)
+    phonebook = phonebook.query.all()
+    return render_template('phonebook.html',title=title, phonebook=phonebook)
 
 
-@app.route('/register_phone_number', methods=['GET', 'POST'])
+@app.route('/pnRegistery', methods=['GET', 'POST']) # Not sure I need this?
 @login_required
 def Register_Phone_Number():
     title = 'Register Phonebook'
@@ -29,19 +30,18 @@ def Register_Phone_Number():
         last_name = register_phone_form.last_name.data
         phone_number = register_phone_form.phone_number.data
         address = register_phone_form.address.data
-
-        new_phonebook = phonebookl(first_name, last_name, phone_number, address)
+        Phone_Book = phonebook(first_name, last_name, phone_number, address)
         
-        db.session.add(new_phonebook)
+        db.session.add(Phone_Book)
         db.session.commit()
 
         flash(f'Thank you' , 'success')
         # Redirecting to the home page
         return redirect(url_for('phonebook'))
 
-    return render_template('register_phone_number.html', title=title, form=register_phone_form)
+    return render_template('pnRegistery.html', title=title, form=register_phone_form)
 
-@app.route('/register', methods= ["GET", "POST"])
+@app.route('/register', methods= ["GET", "POST"]) #Register to be able to login maybe 2 registeries are not necessary?
 def register():
     register_form = UserInfoForm()
     if register_form.validate_on_submit():
@@ -70,6 +70,36 @@ def register():
         return redirect(url_for('index'))
     return render_template('register.html', form=register_form)
 
+
+@app.route('/my_account', methods=['GET', 'POST'])#Display current users info/enter number/edit/delete make similar to register_phone_number'
+@login_required
+def my_account():
+    title = 'Account Details'
+    phone_registry = PhonebookForm()#set  form to a variable
+    if phone_registry.validate_on_submit():
+        first_name = phone_registry.first_name.data
+        last_name = phone_registry.last_name.data
+        phone_number = phone_registry.phone_number.data
+        address = phone_registry.address.data
+
+        new_phonebook = phonebook(first_name, last_name, phone_number, address)
+        
+        db.session.add(new_phonebook)
+        db.session.commit()
+
+        flash(f'Thank you' , 'success')
+        # Redirecting to reigister 
+        return redirect(url_for('phonebook'))
+
+    return render_template('pnRegistery.html', title=title, phone_registry=phone_registry)#gives access to info on html page
+
+
+
+
+
+
+
+##########    LOGIN &&& LOGOUT   ################
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -88,18 +118,18 @@ def login():
         
         login_user(user)
         flash('Success!')
-        return redirect(url_for('index'))
+        return redirect(url_for('my_account'))#takes u to the account page to view/edit
         
-    return render_template('login.html', login_form=form)
+    return render_template('login.html', login_form=form) #takes you to ur form
 
-@app.route('/logout')
+@app.route('/logout')#LOGOUT WORKS WHEN URL IS INPUT
 def logout():
     logout_user()
     return redirect(url_for('index'))
     
 
-@app.route('/my-account')
-@login_required
-def my_account():
-    return render_template('my_account.html')
+
+    
+
+  
 

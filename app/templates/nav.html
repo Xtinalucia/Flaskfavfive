@@ -10,20 +10,32 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="/login">login</a>
           </li>
-          {% else %}
+          <!-- {% if current_user.is_authenticated %} -->
+        
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/my_account">My Account</a></li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="/phonebook" tabindex="-1" aria-disabled="true">PhoneBook</a>
+            </li>
+            
+          <!-- {% else %} -->
+          
+
           <li class="nav-item">
             <a class="nav-link" href="/register">Register</a>
           </li> 
+         
+          <!-- {% endif %} -->
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="{{ url_for('my_account') }}">My Account</a></li>
+            <li><a class="dropdown-item" href="/my-account">My Account</a></li>
           <li class="nav-item">
             <a class="nav-link" href="/phonebook" tabindex="-1" aria-disabled="true">PhoneBook</a>
           </li>
@@ -34,7 +46,7 @@
 
       
       <ul class="navbar-nav ms-auto">
-        {% if current_user.is_authenticated %}
+        <!-- {% if current_user.is_authenticated %} -->
         
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,11 +58,11 @@
           </ul>
         </li>
 
-        {% else %}
+        <!-- {% else %} -->
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
-          {% endif %}
+          <!-- {% endif %} -->
         </ul>
       </div>
     </div>

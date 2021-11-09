@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>Phonebook Registry:</h4>
+<form action="" method="post">
+    {{ phone_registry.csrf_token }}
+    <div class="form-group">
+        <fieldset>
+            {{ phone_registry.first_name.label }}
+            {{ phone_registry.first_name(class='form-control', placeholder='First Name') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ phone_registry.last_name.label }}
+            {{ phone_registry.last_name(class='form-control', placeholder='Last Name') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ phone_registry.phone_number.label }}
+            {{ phone_registry.phone_number(class='form-control', placeholder='Phone Number') }}
+        </fieldset>
+        <br>
+        <fieldset>
+            {{ phone_registry.address.label }}
+            {{ phone_registry.address(class='form-control', placeholder='Address') }}
+        </fieldset>
+        <br>
+        {{ phone_registry.submit_number(class='btn btn-secondary') }}
+    </div>
+</form>
+
+
+{% endblock %}
