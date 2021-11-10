@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 from app.forms import UserInfoForm, LoginForm, PhonebookForm
-from app.models import User
+from app.models import User, Phonebook
 from flask import Blueprint, render_template
 
 @app.route('/') 
@@ -12,15 +12,15 @@ def index():
     return render_template('index.html', title='Home' )
 
 
-@app.route('/phonebook')#show/display all phonebook entries everything For ME
+@app.route('/phonebook', methods=['GET'])#SHOW/DISPLAY all phonebook entries everything For ME
 @login_required
-def phonebook():
+def coffee_cup():
     title = 'Phonebook'
-    phonebook = phonebook.query.all()
+    phonebook = Phonebook.query.all()
     return render_template('phonebook.html',title=title, phonebook=phonebook)
 
 
-@app.route('/pnRegistery', methods=['GET', 'POST']) # Not sure I need this?
+@app.route('/pnRegistery', methods=['POST']) # Not sure I need this?
 @login_required
 def Register_Phone_Number():
     title = 'Register Phonebook'
@@ -30,7 +30,7 @@ def Register_Phone_Number():
         last_name = register_phone_form.last_name.data
         phone_number = register_phone_form.phone_number.data
         address = register_phone_form.address.data
-        Phone_Book = phonebook(first_name, last_name, phone_number, address)
+        Phone_Book = Phonebook(first_name, last_name, phone_number, address)
         
         db.session.add(Phone_Book)
         db.session.commit()
@@ -41,7 +41,7 @@ def Register_Phone_Number():
 
     return render_template('pnRegistery.html', title=title, form=register_phone_form)
 
-@app.route('/register', methods= ["GET", "POST"]) #Register to be able to login maybe 2 registeries are not necessary?
+@app.route('/register', methods= ["POST"]) #Register to be able to login maybe 2 registeries are not necessary?
 def register():
     register_form = UserInfoForm()
     if register_form.validate_on_submit():
@@ -82,14 +82,14 @@ def my_account():
         phone_number = phone_registry.phone_number.data
         address = phone_registry.address.data
 
-        new_phonebook = phonebook(first_name, last_name, phone_number, address)
+        new_phonebook = Phonebook(first_name, last_name, phone_number, address)
         
         db.session.add(new_phonebook)
         db.session.commit()
 
         flash(f'Thank you' , 'success')
         # Redirecting to reigister 
-        return redirect(url_for('phonebook'))
+        return redirect(url_for('index'))
 
     return render_template('pnRegistery.html', title=title, phone_registry=phone_registry)#gives access to info on html page
 

@@ -59,8 +59,8 @@ def logout():
     return redirect(url_for('index'))
 
 
-@auth.route('/myinfo')
+@auth.route('/my_account')
 @login_required
 def myinfo():
     
-    return render_template('my_info.html')
+    return render_template('my_account.html')

@@ -1,9 +1,25 @@
 
+body {
+    background-image: url("p.png");
+    background-color:rgb(23, 26, 24);
+    /* background-image: url('pic1.jpeg'); */
+    border-radius: 96px 0px 96px 0px;
+} 
+
+/* 
 body{
     
-    background-image: url("pbbg copy.jpg");
+    background-image: url('pic1.jpeg');
     background-size: cover;
     background-position: top center;
     background-repeat:no-repeat;
+    background-image: linear-gradient(black, grey, white);
+}  */
+/* body  {
+    background-image: url("pbbg.jpeg");}
     
-} 
+    #grad1 {
+    height: 200px;
+    background-color: #cccccc;
+    background-image: linear-gradient(black, grey, white);
+  } */

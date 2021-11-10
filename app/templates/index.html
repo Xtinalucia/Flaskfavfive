@@ -1,29 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
-
+<!-- {% if current_user.is_authenticated %} -->
+<p style="color:black;">
 <h4>Welcome {{ current_user.username }}</h4>
 {% else %}
 
 {% endif %}
 
-<center><h4>Register using the link above and create your own posts. :)</h4>
-<img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/39126/preview.png" alt="phonebook"></center>
+ <center><h4>Register to Login and add yourself to my Phonebook! :)</h4>
+    <!-- <img src="p.png" alt=" Chania" width="460" height="345"> -->
+    
+<img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/39126/preview.png" alt="phonebook icon"></center> 
 
-{% for p in posts %}
-    <div class="card bg-primary text-dark">
-        <div class="card-header">
-        {{ p.title }}
-        </div>
-        <div class="card-body">
-        <blockquote class="blockquote mb-0">
-            <p>{{ p.content }}</p>
-            <footer class="blockquote-footer text-dark">{{ p.author.username }} on <cite title="Source Title">
-                {{ p.date_created.strftime('%A, %b %d, %Y at %I:%M%p') }}
-            </cite></footer>
-        </blockquote>
-        </div>
-    </div>
+   
+ 
+<!-- {% for p in posts %} -->
+
+   
 {% endfor %}
 {% endblock %}
