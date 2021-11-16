@@ -17,12 +17,12 @@ def index():
     return render_template('index.html', title=title, nums=nums ) 
 
 
-@app.route('/phonebook', methods=['GET'])#SHOW/DISPLAY all phonebook entries everything For ME
-@login_required
-def coffee_cup():
-    title = 'Phonebook'
-    phonebook = Phonebook.query.all()
-    return render_template('phonebook.html',title=title, phonebook=phonebook)
+# @app.route('/phonebook', methods=['GET'])#SHOW/DISPLAY all phonebook entries everything For ME
+# @login_required
+# def coffee_cup():
+#     title = 'Phonebook'
+#     phonebook = Phonebook.query.all()
+#     return render_template('phonebook.html',title=title, phonebook=phonebook)
 
 
 @app.route('/pnRegistery', methods=['POST']) # Not sure I need this?
@@ -74,6 +74,16 @@ def register():
         # mail.send(welcome_message)
         return redirect(url_for('index'))
     return render_template('register.html', form=register_form)
+# How to delete ------------
+@app.route('/my_account/delete/<phonebook_id>')
+def deletePhoneEntry(phonebook_id):
+    PhoneEntry = Phonebook.query.get(phonebook_id)#find the entry by id
+    if not PhoneEntry is None:#if found
+        db.session.delete(PhoneEntry)#delete entire entry
+        db.session.commit()#commit
+        
+    return redirect('/')#refresh the page/#go bk to home page
+    
 
 
 @app.route('/my_account', methods=['GET', 'POST'])#Display current users info/enter number/edit/delete make similar to register_phone_number'
