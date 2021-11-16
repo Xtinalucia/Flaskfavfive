@@ -1,11 +1,20 @@
 
 body {
-    background-image: url("p.png");
+    background-image: url("pb0.png");
     background-color:rgb(23, 26, 24);
-    /* background-image: url('pic1.jpeg'); */
+    background-size: cover;
     border-radius: 96px 0px 96px 0px;
 } 
-
+.card {
+    border-radius: 0px 0px 100px 100px;
+    background-color:rgb(23, 26, 24);
+}
+.list-group {
+    display: flex;
+    border-radius: 96px 96px 96px 0px;
+    flex-direction: column;
+    
+}
 /* 
 body{
     

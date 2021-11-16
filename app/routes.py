@@ -7,9 +7,14 @@ from app.forms import UserInfoForm, LoginForm, PhonebookForm
 from app.models import User, Phonebook
 from flask import Blueprint, render_template
 
+
+
+
 @app.route('/') 
 def index():
-    return render_template('index.html', title='Home' )
+    title = 'The Numbers'
+    nums = Phonebook.query.all()
+    return render_template('index.html', title=title, nums=nums ) 
 
 
 @app.route('/phonebook', methods=['GET'])#SHOW/DISPLAY all phonebook entries everything For ME
@@ -41,7 +46,7 @@ def Register_Phone_Number():
 
     return render_template('pnRegistery.html', title=title, form=register_phone_form)
 
-@app.route('/register', methods= ["POST"]) #Register to be able to login maybe 2 registeries are not necessary?
+@app.route('/register', methods= ["GET", "POST"]) #Register to be able to login maybe 2 registeries are not necessary?
 def register():
     register_form = UserInfoForm()
     if register_form.validate_on_submit():

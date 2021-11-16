@@ -1,22 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- {% if current_user.is_authenticated %} -->
-<p style="color:black;">
-<h4>Welcome {{ current_user.username }}</h4>
-{% else %}
 
-{% endif %}
+<p style="color:rgb(44, 43, 43);">
+<h4> Here are your numbers {{ current_user.username }}:</h4>
+<br>
+{% if current_user.is_authenticated %}
+{% for n in nums %}
 
- <center><h4>Register to Login and add yourself to my Phonebook! :)</h4>
+<div class="card" style="width: 20rem" >
+    
+<ul class="list-group" style="width: 14rem">
+    <li class="list-group-item list-group-item-dark">{{ n.first_name }}</li>
+    <li class="list-group-item list-group-item-dark">{{ n.last_name }}</li>
+    <li class="list-group-item list-group-item-dark">{{ n.phone_number }}</li>
+    <li class="list-group-item list-group-item-dark">{{ n.address }}</li>
+
+</div>
+
+<br>
+
+{% endfor  %}
+{% endif  %}
+
+ <center><h4></h4>
     <!-- <img src="p.png" alt=" Chania" width="460" height="345"> -->
     
 <img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/39126/preview.png" alt="phonebook icon"></center> 
 
    
- 
-<!-- {% for p in posts %} -->
-
-   
-{% endfor %}
-{% endblock %}
+{% endblock content %}
